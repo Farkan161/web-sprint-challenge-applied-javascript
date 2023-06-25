@@ -13,7 +13,19 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
+  const container = document.createElement('div');
+  container.classList.add('topics');
+
+  for (const topic of topics) {
+    const tab = document.createElement('div');
+    tab.classList.add('tab');
+    tab.textContent = topic;
+    container.appendChild(tab);
+  }
+
+  return container;
 }
+
 
 const tabsAppender = (selector) => {
   // TASK 4
@@ -23,6 +35,15 @@ const tabsAppender = (selector) => {
   // Find the array of topics inside the response, and create the tabs using the Tabs component.
   // Append the tabs to the element in the DOM that matches the selector passed to the function.
   //
+  fetch('http://localhost:5001/api/topics')
+  .then(response => response.json())
+  .then(data => {
+    const topics = data.topics;
+    const tabs = Tabs(topics);
+    const container = document.querySelector(selector);
+    container.appendChild(tabs);
+  })
+  .catch(error => console.error(error));
 }
 
 export { Tabs, tabsAppender }
